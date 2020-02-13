@@ -19,7 +19,7 @@ $rosrun people_detection fake_detection
   <img src="HAN.gif">
  </p>
 
-## NAO integraton with Human Aware Navigation 
+## Integration of NAO Robot with Human Aware Navigation 
 
 "nao_han" under source folder contains all the code required for integration of NAO with HAN. Please set the following parameters in the files before launching them. 
 ```

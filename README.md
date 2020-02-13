@@ -47,3 +47,20 @@ $roslaunch nao_han new_nao_walker.launch
  <p align="center">
   <img src="NAO_HAN.gif">
  </p>
+ 
+ ## Comments 
+ - Disable the fire wall if new_nao_walker is unable to connect to NAO 
+ - There will be few errors regarding nao_footprint and socket, if the robot is able to move by publishing to "/mobile_base/commands/velocity" topic then these error can be ignored. 
+ 
+ - The command below can be executed in terminal to test the "new_nao_walker"
+ ```
+ rostopic pub /mobile_base/commands/velocity geometry_msgs/Twist "linear:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.1"
+  ```
+  - Use nao_driver instead of bringup, as bringup launches few other scripts that might cause unexpected behaviour while using  "new_nao_walker.py" script. 

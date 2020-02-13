@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+  <env name="PYTHONPATH" value="$(env PYTHONPATH)" />
+
+  <arg name="nao_ip"              default="130.251.13.122" />
+  <arg name="nao_port"            default="$(optenv NAO_PORT 9559)" />
+
+  <arg name="roscore_ip"          default="130.251.13.170" />
+  <arg name="network_interface"   default="ens33" />
+
+  <arg name="namespace"           default="nao_robot" />
+
+  <node pkg="nao_han" type="new_nao_walker.py" name="new_nao_walker" required="true" args="--pip=$(arg nao_ip) --pport=$(arg nao_port)" output="screen" >
+  </node>
+</launch>

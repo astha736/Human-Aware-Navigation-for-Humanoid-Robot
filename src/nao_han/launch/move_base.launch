@@ -1,0 +1,20 @@
+<launch>
+
+<!--
+  <include file="$(find turtlebot_navigation)/launch/includes/velocity_smoother.launch.xml"/>
+  <include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
+-->
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">   
+    <rosparam file="$(find nao_han)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find nao_han)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />   
+    <rosparam file="$(find nao_han)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find nao_han)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find lattice_planner)/config/nao_global_planner_params.yaml" command="load" />
+    <param name="TBPlanner/dynamic_layers_plugin" value="dynamic_social_costmap::SocialLayers" />
+    <rosparam file="$(find timed_path_follower)/config/local_planner_params.yaml" command="load" />
+    <!--<remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>-->
+    <remap from="cmd_vel" to="/mobile_base/commands/velocity"/>
+  </node>
+
+</launch>

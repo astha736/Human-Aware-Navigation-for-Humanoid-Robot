@@ -1,0 +1,6 @@
+human_aware_navigation/people_detection
+/home/astha/han_ws/devel/.private/people_detection/cmake.lock /home/astha/han_ws/devel/./cmake.lock
+/home/astha/han_ws/devel/.private/people_detection/lib/pkgconfig/people_detection.pc /home/astha/han_ws/devel/lib/pkgconfig/people_detection.pc
+/home/astha/han_ws/devel/.private/people_detection/lib/people_detection/fake_detection /home/astha/han_ws/devel/lib/people_detection/fake_detection
+/home/astha/han_ws/devel/.private/people_detection/share/people_detection/cmake/people_detectionConfig.cmake /home/astha/han_ws/devel/share/people_detection/cmake/people_detectionConfig.cmake
+/home/astha/han_ws/devel/.private/people_detection/share/people_detection/cmake/people_detectionConfig-version.cmake /home/astha/han_ws/devel/share/people_detection/cmake/people_detectionConfig-version.cmake

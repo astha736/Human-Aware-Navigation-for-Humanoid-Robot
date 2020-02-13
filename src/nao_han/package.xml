@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package>
+  <name>nao_han</name>
+  <version>0.0.0</version>
+  <description>
+    Package for integration for nao with Human Aware Navigation 
+  </description>
+  <maintainer email="astha736@gmail.com">Astha Gupta</maintainer>
+  <license>BSD</license>
+
+
+
+
+<buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>message_filters</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>urdf</build_depend>
+  <build_depend>xacro</build_depend>
+  
+  <run_depend>roscpp</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>message_filters</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>urdf</run_depend>
+  <run_depend>xacro</run_depend>
+
+
+  <run_depend>map_server</run_depend>
+  <run_depend>turtlebot_navigation</run_depend>
+  <run_depend>move_base</run_depend>
+  <run_depend>rviz</run_depend>
+
+
+  <export>
+
+  </export>
+</package>

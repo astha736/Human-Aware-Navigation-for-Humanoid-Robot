@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<launch>
+
+  <env name="PYTHONPATH" value="$(env PYTHONPATH)" />
+
+  <arg name="nao_ip"              default="130.251.13.122" />
+  <arg name="nao_port"            default="$(optenv NAO_PORT 9559)" />
+
+  <arg name="roscore_ip"          default="130.251.13.170" />
+  <arg name="network_interface"   default="ens33" />
+
+  <arg name="namespace"           default="nao_robot" />
+
+  <arg name="map_file" default="$(find human_aware_nav_launch)/maps/social_sim_env.yaml"/>
+
+  <arg name="initial_pose_x" default="0" />
+  <arg name="initial_pose_y" default="0" />
+  <arg name="initial_pose_a" default="0" />
+
+ 
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+ <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint"
+    args="0 0  0  0 0 0  base_link base_footprint 100" />
+
+ <node pkg="tf" type="static_transform_publisher" name="odom_to_map"
+    args="0 0  0  0 0 0  map odom 100" />
+
+ 
+
+ <node pkg="nao_han" type="fake_laser.py" name="nao_fake_laser" />
+
+
+
+
+  <include file="$(find nao_han)/launch/move_base.launch" />
+  
+
+  <node name="constant_velocity_prediction" pkg="people_prediction" type="constant_velocity_prediction" />
+
+  <arg name="config_file" default="$(find nao_han)/config/rviz_config.rviz"/>	
+  <node pkg="rviz" type="rviz" name="rviz_navigation" args="-d $(arg config_file)" output="screen">
+  </node>
+
+ 
+</launch>

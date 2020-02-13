@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- By default, we do not start a database (it can be large) -->
+  <arg name="db" default="false" />
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+
+  <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+<!--
+  <include file="$(find nao_moveit_config)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="false"/>
+  </include>
+  -->
+
+  <!-- If needed, broadcast static tf for robot root -->
+   <node pkg="tf" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0 0 0 0 odom base_link 100" />
+
+  <!-- Given the published joint states, publish tf for the robot links -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+
+  <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
+<!--
+  <include file="$(find nao_moveit_config)/launch/move_group.launch">
+    <arg name="allow_trajectory_execution" value="true"/>  
+-->
+    <!-- <arg name="fake_execution" value="true"/> -->
+  <!-- 
+   <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+-->
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  
+  <include file="$(find nao_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+
+  <!-- If database loading was enabled, start mongodb as well -->
+  <include file="$(find nao_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)"/>
+
+
+  <!-- Loading Map and providing a static transform between map and odom -->
+
+  <arg name="map_file" default="$(find nao_han)/maps/playground_new.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <arg name="initial_pose_x" default="0" />
+  <arg name="initial_pose_y" default="0" />
+  <arg name="initial_pose_a" default="0" />
+
+
+  <node pkg="tf" type="static_transform_publisher" name="odom_to_map"
+    args="initial_pose_x initial_pose_y  0  0 0 0  /map /odom 100" />
+
+  <node pkg="tf" type="static_transform_publisher" name="odom_to_base_footprint"
+    args="0 0  0  0 0 0  /odom /base_footprint 100" />
+
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">   
+    <rosparam file="$(find nao_han)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find nao_han)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />   
+    <rosparam file="$(find nao_han)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find nao_han)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find lattice_planner)/config/global_planner_params.yaml" command="load" />
+    <param name="TBPlanner/dynamic_layers_plugin" value="dynamic_social_costmap::SocialLayers" />
+    <rosparam file="$(find timed_path_follower)/config/local_planner_params.yaml" command="load" />
+    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="navigation_velocity_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet nao_nodelet_manager">
+    <rosparam file="$(find turtlebot_bringup)/param/defaults/smoother.yaml" command="load"/>
+    <remap from="navigation_velocity_smoother/smooth_cmd_vel" to="/final_cmd_vel"/>
+
+    <!-- Robot velocity feedbacks; use the default base configuration -->
+    <!--
+    <remap from="navigation_velocity_smoother/odometry" to="odom"/>
+    -->
+    <remap from="navigation_velocity_smoother/robot_cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+  </node>
+
+
+
+
+  <!-- complete robot model with base_footprint 
+  <node pkg="nao_han" type="base_footprint" name="base_footprint" /> -->
+
+
+  <!--- Run constant velocity prediction node -->
+  <node name="constant_velocity_prediction" pkg="people_prediction" type="constant_velocity_prediction" />
+
+  <!--- Run rviz --> 
+  <!--<include file="$(find nao_han)/launch/rviz.launch" />-->
+
+
+
+</launch>

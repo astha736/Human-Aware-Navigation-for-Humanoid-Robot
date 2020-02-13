@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+  <env name="PYTHONPATH" value="$(env PYTHONPATH)" />
+
+  <arg name="nao_ip"              default="130.251.13.122" />
+  <arg name="nao_port"            default="$(optenv NAO_PORT 9559)" />
+
+  <arg name="roscore_ip"          default="130.251.13.170" />
+  <arg name="network_interface"   default="ens33" />
+
+  <arg name="namespace"           default="nao_robot" />
+
+  <!-- naoqi driver -->
+  <include file="$(find naoqi_driver)/launch/naoqi_driver.launch" ns="$(arg namespace)" >
+    <arg name="nao_ip"            value="$(arg nao_ip)" />
+    <arg name="nao_port"          value="$(arg nao_port)" />
+    <arg name="roscore_ip"        value="$(arg roscore_ip)" />
+    <arg name="network_interface" value="$(arg network_interface)" />
+  </include>
+
+
+</launch>

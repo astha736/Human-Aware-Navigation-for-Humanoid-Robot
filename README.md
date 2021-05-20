@@ -1,4 +1,4 @@
-# NAO_Human_Aware_Navigation
+# Human Aware Navigation for Humanoid-Robot with NAO
 
 This package has been developed for integrating [Human Aware Navigation](https://github.com/marinaKollmitz/human_aware_navigation) with NAO robot. All the required package are already put togther in the repository. 
 
